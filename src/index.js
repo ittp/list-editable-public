@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
-import "antd/dist/antd.css";
 import "./index.css";
 import { Table, Input, Button, Popconfirm, Form } from "antd";
 const EditableContext = React.createContext(null);
@@ -37,7 +36,7 @@ const EditableCell = ({
   const toggleEdit = () => {
     setEditing(!editing);
     form.setFieldsValue({
-      [dataIndex]: record[dataIndex]
+      [dataIndex]: record[dataIndex],
     });
   };
 
@@ -57,14 +56,14 @@ const EditableCell = ({
     childNode = editing ? (
       <Form.Item
         style={{
-          margin: 0
+          margin: 0,
         }}
         name={dataIndex}
         rules={[
           {
             required: true,
-            message: `${title} is required.`
-          }
+            message: `${title} is required.`,
+          },
         ]}
       >
         <Input ref={inputRef} onPressEnter={save} onBlur={save} />
@@ -73,7 +72,7 @@ const EditableCell = ({
       <div
         className="editable-cell-value-wrap"
         style={{
-          paddingRight: 24
+          paddingRight: 24,
         }}
         onClick={toggleEdit}
       >
@@ -104,16 +103,21 @@ class EditableTable extends React.Component {
         title: "name",
         dataIndex: "name",
         width: "30%",
-        editable: true
+        editable: true,
       },
       {
-        title: "age",
-        dataIndex: "age"
+        title: "description",
+        dataIndex: "description",
+        width: "60%",
+        editable: true,
       },
+
       {
-        title: "address",
-        dataIndex: "address"
+        title: "cost",
+        dataIndex: "cost",
+        editable: false,
       },
+
       {
         title: "operation",
         dataIndex: "operation",
@@ -125,38 +129,41 @@ class EditableTable extends React.Component {
             >
               <a>Delete</a>
             </Popconfirm>
-          ) : null
-      }
+          ) : null,
+      },
     ];
     this.state = {
       dataSource: [
         {
+          id: 1,
           key: "0",
-          type: "user",
-          username: "sip",
-          fullname: "Seleznev Ivan Petrovich",
-          accounts: {
-            organization: {
-              username: "ip.seleznev",
-              domain: "gov.tp"
-            }
-          }
+          name: "Coffee",
+          cost: "300",
+          description: "coffee, milk, sugar",
         },
         {
+          id: 2,
+          key: "3",
+          name: "Coffee",
+          cost: "300",
+          description: "coffee, milk, sugar",
+        },
+        {
+          id: 3,
           key: "1",
-          name: "Edward King 1",
-          age: "32",
-          address: "London, Park Lane no. 1"
-        }
+          name: "Coffee",
+          cost: "300",
+          description: "coffee, milk, sugar",
+        },
       ],
-      count: 2
+      count: 2,
     };
   }
 
   handleDelete = (key) => {
     const dataSource = [...this.state.dataSource];
     this.setState({
-      dataSource: dataSource.filter((item) => item.key !== key)
+      dataSource: dataSource.filter((item) => item.key !== key),
     });
   };
   handleAdd = () => {
@@ -166,12 +173,12 @@ class EditableTable extends React.Component {
       uno: ``,
       name: ``,
       age: "",
-      address: ``
+      address: ``,
     };
 
     this.setState({
       dataSource: [...dataSource, newData],
-      count: count + 1
+      count: count + 1,
     });
   };
   handleSave = (row) => {
@@ -180,7 +187,7 @@ class EditableTable extends React.Component {
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
     this.setState({
-      dataSource: newData
+      dataSource: newData,
     });
   };
 
@@ -189,8 +196,8 @@ class EditableTable extends React.Component {
     const components = {
       body: {
         row: EditableRow,
-        cell: EditableCell
-      }
+        cell: EditableCell,
+      },
     };
     const columns = this.columns.map((col) => {
       if (!col.editable) {
@@ -204,8 +211,8 @@ class EditableTable extends React.Component {
           editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
-          handleSave: this.handleSave
-        })
+          handleSave: this.handleSave,
+        }),
       };
     });
     return (
@@ -214,7 +221,7 @@ class EditableTable extends React.Component {
           onClick={this.handleAdd}
           type="primary"
           style={{
-            marginBottom: 16
+            marginBottom: 16,
           }}
         >
           Add a row
